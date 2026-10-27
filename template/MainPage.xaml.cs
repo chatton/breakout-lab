@@ -211,12 +211,30 @@ public partial class MainPage : ContentPage
     //   5. If it hits a brick: reverse dy, add to the score, DestroyBrickAsync(brick),
     //      and if no bricks are left: EndGameAsync("You win!")
     //   6. PlaceBall()
-    // Hint: var ballRect = new Rect(ballX, ballY, BallSize, BallSize);
-    //       ballRect.IntersectsWith(otherRect)
-    // Hint: AbsoluteLayout.GetLayoutBounds(brick) gives a brick's Rect
+    //
+    // Coordinates: (0,0) is the TOP-LEFT of GameArea. x grows right, y grows DOWN.
+    //   So dy > 0 means the ball is falling, and the bottom edge is at GameArea.Height.
+    //   ballX/ballY is the ball's top-left corner, so it touches the RIGHT wall
+    //   when ballX >= GameArea.Width - BallSize (not GameArea.Width).
+    // Hint: if the ball gets "stuck" in a wall, set dx = Math.Abs(dx) instead of dx = -dx
+    //
+    // Collisions: var ballRect = new Rect(ballX, ballY, BallSize, BallSize);
+    //   then ballRect.IntersectsWith(otherRect) tells you if two rectangles overlap.
+    //
+    // Paddle: build its Rect from paddleX, PaddleY, PaddleWidth, PaddleHeight.
+    //   Only bounce if the ball is moving DOWN (dy > 0), and move the ball so it sits
+    //   on top of the paddle (ballY = PaddleY - BallSize). Otherwise it can stay
+    //   overlapping and bounce back and forth inside the paddle.
+    //
+    // Bricks: AbsoluteLayout.GetLayoutBounds(brick) gives a brick's Rect.
+    //   DON'T call DestroyBrickAsync inside a foreach over bricks. It removes the
+    //   brick from the list, and changing a list while foreach is looping over it
+    //   throws "Collection was modified". Find the hit brick FIRST, then deal with it:
+    //   var hit = bricks.FirstOrDefault(b => ...);   (or loop, store it, and break)
+    //   Only handle one brick per tick.
+    //
     // Hint: don't await DestroyBrickAsync or EndGameAsync in here. What would happen
     //       to the game loop if you did? Use  _ = DestroyBrickAsync(hit);
-    // Hint: if the ball gets "stuck" in a wall, set dx = Math.Abs(dx) instead of dx = -dx
     void MoveBall()
     {
     }
