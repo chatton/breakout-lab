@@ -41,7 +41,8 @@ public partial class MainPage : ContentPage
     int secondsLeft;
     bool isPlaying;
 
-    // TODO (after Part A): uncomment once GameArea exists in your XAML
+    // TODO (after Part A): uncomment once GameArea exists in your XAML.
+    // The paddle's y position: near the bottom of the play area.
     // double PaddleY => GameArea.Height - PaddleBottomOffset - PaddleHeight;
 
     public MainPage()
@@ -97,11 +98,12 @@ public partial class MainPage : ContentPage
     // =====================================================================
 
     // TODO C1: create BrickRows x BrickColumns BoxViews and add them to GameArea and to the bricks list.
-    //   - Work out brickWidth so BrickColumns bricks plus spacing fill GameArea.Width
+    //   - Work out brickWidth so BrickColumns bricks, with BrickSpacing between and around them,
+    //     fill GameArea.Width
     //   - Apply the BrickStyle from your XAML resources
     //   - Give each row its own colour from RowColors
     //   - For Part D: start each brick with Opacity = 0 and TranslationY = -200
-    // Hint: var style = (Style)Resources["BrickStyle"];
+    // Hint: var brickStyle = (Style)Resources["BrickStyle"];
     // Hint: AbsoluteLayout.SetLayoutBounds(brick, new Rect(x, y, width, height));
     // Hint: GameArea.Children.Add(brick);
     void CreateBricks()
@@ -113,11 +115,13 @@ public partial class MainPage : ContentPage
     //   - Reset score, secondsLeft, and moveDirection, and update both labels
     //   - Hide GameOverLabel again
     //   - Call CentrePaddleAndBall() and set the ball's starting velocity (dx, dy)
+    // Hint: Random.Shared.Next(2) gives 0 or 1, handy for a random left/right start
     void ResetGame()
     {
     }
 
-    // TODO C3: put the paddle centred near the bottom and the ball in the middle, then call PlacePaddle()/PlaceBall().
+    // TODO C3: put the paddle centred horizontally and the ball in the middle of the play area,
+    //   then call PlacePaddle() and PlaceBall().
     void CentrePaddleAndBall()
     {
     }
@@ -130,19 +134,19 @@ public partial class MainPage : ContentPage
     // They all return a Task, so you can await them.
     // Task.WhenAll(task1, task2, ...) runs them at the same time and finishes when ALL are done.
 
-    // TODO D1: make every brick fade in AND drop into place at the same time.
+    // TODO D1: drop ALL the bricks in at the same time, and finish when the last one lands.
     //   Await this before the game starts.
-    // Hint: brick.TranslateToAsync(0, 0, 600, Easing.BounceOut) moves it back to its real slot
-    // Stretch: stagger each row slightly with await Task.Delay(...)
-    async Task AnimateBricksInAsync()
+    // Hint: call DropInAsync for every brick, then Task.WhenAll the resulting tasks
+    // Stretch: make each row start a little later than the one above (row = i / BrickColumns)
+    Task AnimateBricksInAsync()
     {
-        await Task.CompletedTask; // remove this line once you've added your own awaits
+        return Task.CompletedTask; // replace with your own code
     }
 
-    // TODO D2: show GameOverLabel with the message and the final score,
-    //   fading in and scaling up at the same time.
-    // Hint: set Scale small and Opacity to 0 and make it visible BEFORE animating
-    async Task ShowGameOverAsync(string message)
+    // TODO D2: wait delayMs, then fade the brick in AND move it into place at the same time.
+    // Hint: await Task.Delay(delayMs);
+    // Hint: brick.TranslateToAsync(0, 0, 600, Easing.BounceOut) moves it back to its real slot
+    static async Task DropInAsync(BoxView brick, int delayMs)
     {
         await Task.CompletedTask; // remove this line once you've added your own awaits
     }
@@ -151,6 +155,15 @@ public partial class MainPage : ContentPage
     //   THEN remove it from GameArea.Children.
     // Think: when should it be removed from the bricks LIST, before or after the animation? Why?
     async Task DestroyBrickAsync(BoxView brick)
+    {
+        await Task.CompletedTask; // remove this line once you've added your own awaits
+    }
+
+    // TODO D4: show GameOverLabel with the message and the final score,
+    //   fading in and scaling up at the same time.
+    // Hint: set Scale small, Opacity to 0 and IsVisible = true BEFORE animating
+    // Hint: "\n" in a string starts a new line in the label
+    async Task ShowGameOverAsync(string message)
     {
         await Task.CompletedTask; // remove this line once you've added your own awaits
     }
@@ -216,7 +229,7 @@ public partial class MainPage : ContentPage
     // Hint: Preferences.Default.Set(key, value)
     // Use the HighScoreKey constant for the key so the two methods can't disagree on spelling.
 
-    // TODO G2: read the saved high score into highScore and update HighScoreLabel ("Best: N").
+    // TODO G2: read the saved high score into highScore and update HighScoreLabel.
     void LoadHighScore()
     {
     }
@@ -227,15 +240,32 @@ public partial class MainPage : ContentPage
     }
 
     // =====================================================================
-    // Helpers
+    // Helpers (fill these in after Part A, once the named elements exist)
     // =====================================================================
 
-    // TODO (after Part A): use AbsoluteLayout.SetLayoutBounds to move Paddle and Ball to their current positions.
+    // TODO H1: HighScoreLabel.Text = "Best: N"
+    void UpdateHighScoreLabel()
+    {
+    }
+
+    // TODO H2: move Paddle to (paddleX, PaddleY), size PaddleWidth x PaddleHeight.
+    // Hint: AbsoluteLayout.SetLayoutBounds(Paddle, new Rect(...));
     void PlacePaddle()
     {
     }
 
+    // TODO H3: move Ball to (ballX, ballY), size BallSize x BallSize.
     void PlaceBall()
+    {
+    }
+
+    // TODO H4: ScoreLabel.Text = "Score: N"
+    void UpdateScoreLabel()
+    {
+    }
+
+    // TODO H5: TimeLabel.Text = "Time: N"
+    void UpdateTimeLabel()
     {
     }
 }

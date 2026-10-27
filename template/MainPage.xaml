@@ -44,8 +44,11 @@
           Hint: IsClippedToBounds="True" stops things drawing outside the play area
           Hint: ZIndex="10" keeps the label on top of bricks added later
 
-        TODO A5: Controls row. A HorizontalStackLayout with three buttons:
+        TODO A5: Controls row. A centred HorizontalStackLayout with three buttons:
                  LeftButton ("◀"), StartButton ("Start"), RightButton ("▶").
+          Hint: give the button style WidthRequest="90", and override it on StartButton
+                (WidthRequest="150") so "Play again" fits. A value set directly on an
+                element beats the value from its Style.
 
         PART B (wire these up once your handlers exist in MainPage.xaml.cs):
           - StartButton:  Clicked="OnStartClicked"
