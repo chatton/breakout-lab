@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="BreakoutExam.MainPage"
+             Title="Breakout"
+             BackgroundColor="#1E1E2E">
+
+    <!--
+        ============================================================
+        PART A: XAML layout and styles  (~15 min)
+        ============================================================
+
+        TODO A1: Add a <ContentPage.Resources> section containing:
+          - a Style with x:Key="BrickStyle" for BoxView
+            (set at least Color and CornerRadius).
+            You will look this style up from C# in Part C.
+          - a Style for the header Labels (white, bold, ~20pt)
+          - a Style for the control Buttons
+          Hint: <Style x:Key="..." TargetType="BoxView">
+                    <Setter Property="..." Value="..." />
+                </Style>
+          Hint: apply a style in XAML with Style="{StaticResource YourKey}"
+
+        TODO A2: Build the page layout as a Grid with three rows:
+                 header (Auto), play area (*), controls (Auto).
+          Hint: <Grid RowDefinitions="Auto,*,Auto"> and Grid.Row="1" on children
+
+        TODO A3: Header row. Three Labels side by side: the score ("Score: 0"),
+                 the saved high score ("Best: 0"), and the time left ("Time: 60").
+                 Give them names so C# can update them:
+                 x:Name="ScoreLabel" / "HighScoreLabel" / "TimeLabel"
+          Hint: a Grid with ColumnDefinitions="*,*,*" and Grid.Column="..." on each label
+
+        TODO A4: Play area row. An AbsoluteLayout named GameArea with a black background.
+          Inside it:
+            - a BoxView named Paddle (white, 100 x 15)
+            - a BoxView named Ball (yellow, 16 x 16, CornerRadius 8 makes it round)
+            - a Label named GameOverLabel that is hidden (IsVisible="False", Opacity="0"),
+              centred in the play area, large white text
+          Hint: AbsoluteLayout.LayoutBounds="x,y,width,height"
+          Hint: to centre the label use
+                AbsoluteLayout.LayoutFlags="PositionProportional"
+                AbsoluteLayout.LayoutBounds="0.5,0.5,AutoSize,AutoSize"
+          Hint: IsClippedToBounds="True" stops things drawing outside the play area
+          Hint: ZIndex="10" keeps the label on top of bricks added later
+
+        TODO A5: Controls row. A HorizontalStackLayout with three buttons:
+                 LeftButton ("◀"), StartButton ("Start"), RightButton ("▶").
+
+        PART B (wire these up once your handlers exist in MainPage.xaml.cs):
+          - StartButton:  Clicked="OnStartClicked"
+          - LeftButton:   Pressed="OnLeftPressed"  Released="OnMoveReleased"
+          - RightButton:  Pressed="OnRightPressed" Released="OnMoveReleased"
+          - GameArea:     SizeChanged="OnGameAreaSizeChanged"
+    -->
+
+    <!-- TODO: replace this placeholder with your layout -->
+    <Label Text="Breakout: build me!"
+           TextColor="White"
+           HorizontalOptions="Center"
+           VerticalOptions="Center" />
+
+</ContentPage>
