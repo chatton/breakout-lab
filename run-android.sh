@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Build and run a project on an Android emulator (MAUI only supports Android on Linux).
 #
-# Usage: ./run-android.sh [project-dir]     (default: template)
+# Usage: ./run-android.sh <project-dir>     (your dotnet new maui project)
 #
 # Expects a user-local install (override any of these with environment variables):
 #   .NET SDK + maui-android workload in ~/.dotnet
@@ -9,7 +9,7 @@
 #   Android SDK in ~/Android/Sdk with an AVD named "breakout"
 set -euo pipefail
 
-PROJECT="${1:-template}"
+PROJECT="${1:?usage: $0 <project-dir>}"
 
 export DOTNET_ROOT="${DOTNET_ROOT:-$HOME/.dotnet}"
 export ANDROID_HOME="${ANDROID_HOME:-$HOME/Android/Sdk}"
@@ -17,8 +17,6 @@ export JAVA_HOME="${JAVA_HOME:-$(ls -d "$HOME"/.local/share/jdk/jdk-17* | head -
 export DOTNET_CLI_TELEMETRY_OPTOUT=1
 export PATH="$DOTNET_ROOT:$ANDROID_HOME/platform-tools:$PATH"
 AVD="${AVD:-breakout}"
-
-cd "$(dirname "$0")"
 
 if ! adb devices | grep -qE '^emulator-[0-9]+\s+device'; then
     echo "Starting emulator '$AVD'..."

@@ -6,61 +6,110 @@
              BackgroundColor="#1E1E2E">
 
     <!--
-        ============================================================
-        PART A: XAML layout and styles  (~15 min)
-        ============================================================
+        The layout is given to you: you don't need to edit this file.
 
-        TODO A1: Add a <ContentPage.Resources> section containing:
-          - a Style with x:Key="BrickStyle" for BoxView
-            (set at least Color and CornerRadius).
-            You will look this style up from C# in Part C.
-          - a Style for the header Labels (white, bold, ~20pt)
-          - a Style for the control Buttons
-          Hint: <Style x:Key="..." TargetType="BoxView">
-                    <Setter Property="..." Value="..." />
-                </Style>
-          Hint: apply a style in XAML with Style="{StaticResource YourKey}"
+        Setup: create a new project with  dotnet new maui -n BreakoutExam  and replace
+        its MainPage.xaml and MainPage.xaml.cs with these two files. All styles live in
+        this file, so it doesn't depend on anything else in the project.
+        (Visual Studio: .NET MAUI App template, .NET 10, with "Include sample content" UNticked.)
 
-        TODO A2: Build the page layout as a Grid with three rows:
-                 header (Auto), play area (*), controls (Auto).
-          Hint: <Grid RowDefinitions="Auto,*,Auto"> and Grid.Row="1" on children
+        Every element you need from C# has an x:Name, so it is available as a field
+        in MainPage.xaml.cs (ScoreLabel, HighScoreLabel, TimeLabel, GameArea, Paddle,
+        Ball, GameOverLabel, LeftButton, StartButton, RightButton).
 
-        TODO A3: Header row. Three Labels side by side: the score ("Score: 0"),
-                 the saved high score ("Best: 0"), and the time left ("Time: 60").
-                 Give them names so C# can update them:
-                 x:Name="ScoreLabel" / "HighScoreLabel" / "TimeLabel"
-          Hint: a Grid with ColumnDefinitions="*,*,*" and Grid.Column="..." on each label
+        Styles are in ContentPage.Resources below. BrickStyle isn't used here; you
+        look it up from C# in Part C:  (Style)Resources["BrickStyle"]
 
-        TODO A4: Play area row. An AbsoluteLayout named GameArea with a black background.
-          Inside it:
-            - a BoxView named Paddle (white, 100 x 15)
-            - a BoxView named Ball (yellow, 16 x 16, CornerRadius 8 makes it round)
-            - a Label named GameOverLabel that is hidden (IsVisible="False", Opacity="0"),
-              centred in the play area, large white text
-          Hint: AbsoluteLayout.LayoutBounds="x,y,width,height"
-          Hint: to centre the label use
-                AbsoluteLayout.LayoutFlags="PositionProportional"
-                AbsoluteLayout.LayoutBounds="0.5,0.5,AutoSize,AutoSize"
-          Hint: IsClippedToBounds="True" stops things drawing outside the play area
-          Hint: ZIndex="10" keeps the label on top of bricks added later
-
-        TODO A5: Controls row. A centred HorizontalStackLayout with three buttons:
-                 LeftButton ("◀"), StartButton ("Start"), RightButton ("▶").
-          Hint: give the button style WidthRequest="90", and override it on StartButton
-                (WidthRequest="150") so "Play again" fits. A value set directly on an
-                element beats the value from its Style.
-
-        PART B (wire these up once your handlers exist in MainPage.xaml.cs):
-          - StartButton:  Clicked="OnStartClicked"
-          - LeftButton:   Pressed="OnLeftPressed"  Released="OnMoveReleased"
-          - RightButton:  Pressed="OnRightPressed" Released="OnMoveReleased"
-          - GameArea:     SizeChanged="OnGameAreaSizeChanged"
+        NOTE: no events are connected in this file. Nothing happens when you press a
+        button until you wire it up in C# (Part B, in the MainPage constructor).
     -->
 
-    <!-- TODO: replace this placeholder with your layout -->
-    <Label Text="Breakout: build me!"
-           TextColor="White"
-           HorizontalOptions="Center"
-           VerticalOptions="Center" />
+    <ContentPage.Resources>
+        <Style x:Key="BrickStyle" TargetType="BoxView">
+            <Setter Property="Color" Value="White" />
+            <Setter Property="CornerRadius" Value="4" />
+        </Style>
+
+        <Style x:Key="HeaderLabelStyle" TargetType="Label">
+            <Setter Property="TextColor" Value="White" />
+            <Setter Property="FontAttributes" Value="Bold" />
+            <Setter Property="FontSize" Value="20" />
+            <Setter Property="HorizontalOptions" Value="Center" />
+        </Style>
+
+        <Style x:Key="ControlButtonStyle" TargetType="Button">
+            <Setter Property="BackgroundColor" Value="#89B4FA" />
+            <Setter Property="TextColor" Value="#1E1E2E" />
+            <Setter Property="FontAttributes" Value="Bold" />
+            <Setter Property="FontSize" Value="20" />
+            <Setter Property="WidthRequest" Value="90" />
+            <Setter Property="HeightRequest" Value="50" />
+        </Style>
+    </ContentPage.Resources>
+
+    <Grid RowDefinitions="Auto,*,Auto"
+          Padding="10"
+          RowSpacing="10">
+
+        <!-- Header: score, high score, time left -->
+        <Grid Grid.Row="0" ColumnDefinitions="*,*,*">
+            <Label x:Name="ScoreLabel"
+                   Grid.Column="0"
+                   Text="Score: 0"
+                   Style="{StaticResource HeaderLabelStyle}" />
+            <Label x:Name="HighScoreLabel"
+                   Grid.Column="1"
+                   Text="Best: 0"
+                   Style="{StaticResource HeaderLabelStyle}" />
+            <Label x:Name="TimeLabel"
+                   Grid.Column="2"
+                   Text="Time: 60"
+                   Style="{StaticResource HeaderLabelStyle}" />
+        </Grid>
+
+        <!-- Play area. (0,0) is the top-left corner; bricks are added here from C#. -->
+        <AbsoluteLayout x:Name="GameArea"
+                        Grid.Row="1"
+                        BackgroundColor="Black"
+                        IsClippedToBounds="True">
+
+            <BoxView x:Name="Paddle"
+                     Color="White"
+                     CornerRadius="4"
+                     AbsoluteLayout.LayoutBounds="0,0,100,15" />
+
+            <BoxView x:Name="Ball"
+                     Color="Yellow"
+                     CornerRadius="8"
+                     AbsoluteLayout.LayoutBounds="0,0,16,16" />
+
+            <Label x:Name="GameOverLabel"
+                   IsVisible="False"
+                   Opacity="0"
+                   ZIndex="10"
+                   TextColor="White"
+                   FontSize="32"
+                   FontAttributes="Bold"
+                   HorizontalTextAlignment="Center"
+                   AbsoluteLayout.LayoutFlags="PositionProportional"
+                   AbsoluteLayout.LayoutBounds="0.5,0.5,AutoSize,AutoSize" />
+        </AbsoluteLayout>
+
+        <!-- Controls -->
+        <HorizontalStackLayout Grid.Row="2"
+                               HorizontalOptions="Center"
+                               Spacing="20">
+            <Button x:Name="LeftButton"
+                    Text="◀"
+                    Style="{StaticResource ControlButtonStyle}" />
+            <Button x:Name="StartButton"
+                    Text="Start"
+                    WidthRequest="150"
+                    Style="{StaticResource ControlButtonStyle}" />
+            <Button x:Name="RightButton"
+                    Text="▶"
+                    Style="{StaticResource ControlButtonStyle}" />
+        </HorizontalStackLayout>
+    </Grid>
 
 </ContentPage>

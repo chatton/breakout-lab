@@ -1,7 +1,12 @@
 namespace BreakoutExam;
 
-// The game settings and state fields below are given to you. Everything marked TODO is yours.
-// Work through the parts in order (A to G). The app should build and run after every part.
+// Setup: create a new project with  dotnet new maui -n BreakoutExam  and replace its
+// MainPage.xaml and MainPage.xaml.cs with these two files. Nothing else needs changing.
+// (Visual Studio: .NET MAUI App template, .NET 10, with "Include sample content" UNticked.)
+// (Different project name? Change "BreakoutExam" here and in x:Class in MainPage.xaml.)
+
+// The layout (MainPage.xaml), game settings and state fields are given to you. Everything marked TODO is yours.
+// Work through the parts in order (B to G). The app should build and run after every part.
 
 public partial class MainPage : ContentPage
 {
@@ -41,13 +46,22 @@ public partial class MainPage : ContentPage
     int secondsLeft;
     bool isPlaying;
 
-    // TODO (after Part A): uncomment once GameArea exists in your XAML.
-    // The paddle's y position: near the bottom of the play area.
-    // double PaddleY => GameArea.Height - PaddleBottomOffset - PaddleHeight;
+    // The paddle's y position: near the bottom of the play area (given).
+    double PaddleY => GameArea.Height - PaddleBottomOffset - PaddleHeight;
 
     public MainPage()
     {
         InitializeComponent();
+
+        // TODO B0: the XAML has NO event attributes, so nothing is connected yet.
+        //   Subscribe each handler below to its element's event:
+        //     - StartButton.Clicked      -> OnStartClicked
+        //     - LeftButton.Pressed       -> OnLeftPressed
+        //     - RightButton.Pressed      -> OnRightPressed
+        //     - LeftButton.Released and RightButton.Released -> OnMoveReleased
+        //     - GameArea.SizeChanged     -> OnGameAreaSizeChanged
+        // Hint: x:Name in the XAML makes each element a field you can use here.
+        // Hint: StartButton.Clicked += OnStartClicked;
 
         // TODO E1: create the game loop timer (~60 ticks per second) and hook up OnGameTick.
         // Hint: gameTimer = Dispatcher.CreateTimer();
@@ -258,7 +272,7 @@ public partial class MainPage : ContentPage
     }
 
     // =====================================================================
-    // Helpers (fill these in after Part A, once the named elements exist)
+    // Helpers (fill these in first: the other parts use them)
     // =====================================================================
 
     // TODO H1: HighScoreLabel.Text = "Best: N"
